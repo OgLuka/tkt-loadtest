@@ -27,12 +27,17 @@ NODE_COUNT="${2:-1}"
 PEAK_VUS="${3:-30000}"
 
 # ---- required ----
-: "${BASE_URL:?set BASE_URL e.g. https://www.tkt.ge}"
-: "${EVENT_ID:?set EVENT_ID for the concert}"
-: "${EVENT_SLUG:?set EVENT_SLUG for the concert URL slug}"
+: "${EVENT_ITEM_ID:?set EVENT_ITEM_ID e.g. 501108 for the test event}"
+: "${EVENT_MAP_ID:?set EVENT_MAP_ID for the seatmap of EVENT_ITEM_ID}"
+
+# ---- optional with sensible defaults ----
+EVENT_CATEGORY="${EVENT_CATEGORY:-Event}"
+API_BASE="${API_BASE:-https://gateway.tkt.ge}"
+SOCKET_BASE="${SOCKET_BASE:-https://socket.tkt.ge}"
+SOCKET_WS_BASE="${SOCKET_WS_BASE:-wss://socket.tkt.ge}"
+ORIGIN="${ORIGIN:-https://tkt.ge}"
 
 # ---- recommended ----
-WS_URL="${WS_URL:-wss://ws.tkt.ge}"
 KILL_SWITCH_URL="${KILL_SWITCH_URL:-}"
 RUN_ID="${RUN_ID:-tkt-$(date -u +%Y%m%dT%H%M%SZ)}"
 
@@ -62,10 +67,13 @@ echo "==> Hit Ctrl-C OR set ${KILL_SWITCH_URL} body to STOP to abort the run."
 exec k6 run \
   --tag node="${NODE_ID}" \
   --tag run="${RUN_ID}" \
-  -e BASE_URL="${BASE_URL}" \
-  -e WS_URL="${WS_URL}" \
-  -e EVENT_ID="${EVENT_ID}" \
-  -e EVENT_SLUG="${EVENT_SLUG}" \
+  -e API_BASE="${API_BASE}" \
+  -e SOCKET_BASE="${SOCKET_BASE}" \
+  -e SOCKET_WS_BASE="${SOCKET_WS_BASE}" \
+  -e ORIGIN="${ORIGIN}" \
+  -e EVENT_ITEM_ID="${EVENT_ITEM_ID}" \
+  -e EVENT_MAP_ID="${EVENT_MAP_ID}" \
+  -e EVENT_CATEGORY="${EVENT_CATEGORY}" \
   -e NODE_ID="${NODE_ID}" \
   -e NODE_COUNT="${NODE_COUNT}" \
   -e PEAK_VUS="${PEAK_VUS}" \
