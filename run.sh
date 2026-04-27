@@ -46,6 +46,7 @@ else
 fi
 
 mkdir -p ./results
+cd ./results
 
 echo "==> Starting k6 — node ${NODE_ID}/${NODE_COUNT}, peak VUs=${PEAK_VUS}, run=${RUN_ID}"
 echo "==> Target: ${BASE_URL}  WS: ${WS_URL}"
@@ -71,5 +72,5 @@ exec k6 run \
   -e BUYER_RATE_PER_MIN="${BUYER_RATE_PER_MIN}" \
   -e KILL_SWITCH_URL="${KILL_SWITCH_URL}" \
   -e RUN_ID="${RUN_ID}" \
-  --out json=./results/raw-"${RUN_ID}"-node"${NODE_ID}".json.gz \
-  ./loadtest.js
+  --out json=raw-"${RUN_ID}"-node"${NODE_ID}".json.gz \
+  ../loadtest.js

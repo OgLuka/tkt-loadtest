@@ -168,11 +168,13 @@ export const options = {
 export default function () {}
 
 // handleSummary writes a JSON summary file alongside the run, easy to ship
-// to S3 after a distributed run for cross-node aggregation.
+// to S3 after a distributed run for cross-node aggregation. Written to
+// the current working directory so a plain `k6 run loadtest.js` works
+// without needing a `results/` directory to exist.
 export function handleSummary(data) {
   return {
     stdout: textSummary(data),
-    [`./results/summary-${CONFIG.RUN_ID}-node${CONFIG.NODE_ID}.json`]:
+    [`summary-${CONFIG.RUN_ID}-node${CONFIG.NODE_ID}.json`]:
       JSON.stringify(data, null, 2),
   };
 }
